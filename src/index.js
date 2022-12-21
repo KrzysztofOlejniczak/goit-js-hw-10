@@ -18,6 +18,34 @@ const clearResult = () => {
   countryInfo.innerHTML = '';
 };
 
+const printDetailed = data => {
+  const country = data[0];
+  const languages = Object.values(country.languages);
+  let languagesToPrint = '';
+  if (languages.length === 1) {
+    languagesToPrint = `<span class="highlight">Language:</span> ${languages}`;
+  } else {
+    languagesToPrint = `<span class="highlight">Languages:</span> ${languages.join(
+      ', '
+    )}`;
+  }
+  countryInfo.innerHTML = `<div class="country-heading">
+        <img src="${country.flags.svg}" />
+        <p>${country.name.common}</p>
+      </div>
+      <ul class="country-info-list">
+        <li class="country-info-item">
+          <span class="highlight">Capital:</span> ${country.capital}
+        </li>
+        <li class="country-info-item">
+          <span class="highlight">Population:</span> ${country.population}
+        </li>
+        <li class="country-info-item">
+          ${languagesToPrint}
+        </li>
+      </ul>`;
+};
+
 const readInput = () => {
   if (input.value.trim() === '') {
     clearResult();
@@ -41,31 +69,7 @@ const readInput = () => {
           countryList.innerHTML = list;
         } else {
           clearResult();
-          const country = data[0];
-          const languages = Object.values(country.languages);
-          let languagesToPrint = '';
-          if (languages.length === 1) {
-            languagesToPrint = `<span class="highlight">Language:</span> ${languages}`;
-          } else {
-            languagesToPrint = `<span class="highlight">Languages:</span> ${languages.join(
-              ', '
-            )}`;
-          }
-          countryInfo.innerHTML = `<div class="country-heading">
-        <img src="${country.flags.svg}" />
-        <p>${country.name.common}</p>
-      </div>
-      <ul class="country-info-list">
-        <li class="country-info-item">
-          <span class="highlight">Capital:</span> ${country.capital}
-        </li>
-        <li class="country-info-item">
-          <span class="highlight">Population:</span> ${country.population}
-        </li>
-        <li class="country-info-item">
-          ${languagesToPrint}
-        </li>
-      </ul>`;
+          printDetailed(data);
         }
       })
       .catch(() => Notify.failure('Oops, there is no country with that name'));
