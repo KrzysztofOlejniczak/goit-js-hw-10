@@ -31,9 +31,14 @@ const readInput = () => {
           );
         } else if (data.length > 1) {
           clearResult();
-          data.forEach(el => {
-            countryList.innerHTML += `<li class="country-item"><img src=${el.flags.svg} /> <p>${el.name.common}</p></li>`;
-          });
+          const list = data
+            .sort((a, b) => a.name.common.localeCompare(b.name.common))
+            .map(
+              el =>
+                `<li class="country-item"><img src=${el.flags.svg} /> <p>${el.name.common}</p></li>`
+            )
+            .join('\n');
+          countryList.innerHTML = list;
         } else {
           clearResult();
           const country = data[0];
